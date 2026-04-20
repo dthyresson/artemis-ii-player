@@ -11,7 +11,7 @@ import { fileURLToPath } from 'node:url'
 import { dirname, join } from 'node:path'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
-const DATA_DIR = join(__dirname, '..', 'data')
+const DATA_DIR = join(__dirname, '..', 'public', 'data')
 
 const BASE_URL = 'https://ssd.jpl.nasa.gov/api/horizons.api'
 
