@@ -2,6 +2,8 @@
 
 An interactive 3D visualization of the Artemis II mission (April 2026), showing the Orion spacecraft's journey from Earth to the Moon and back. Trajectory data is fetched live from NASA's JPL Horizons API.
 
+<img width="1424" height="775" alt="image" src="https://github.com/user-attachments/assets/fd87e54d-2802-40c2-88de-77feebf4c2f0" />
+
 ---
 
 ## What It Shows
@@ -26,10 +28,10 @@ An interactive 3D visualization of the Artemis II mission (April 2026), showing 
 
 Trajectory data is fetched from the [JPL Horizons API](https://ssd.jpl.nasa.gov/horizons/) at runtime:
 
-| Object | Horizons ID | Description |
-|--------|-------------|-------------|
-| Orion (Artemis II) | `-1024` | Orion EM-2 spacecraft |
-| Moon | `301` | Earth's Moon |
+| Object             | Horizons ID | Description           |
+| ------------------ | ----------- | --------------------- |
+| Orion (Artemis II) | `-1024`     | Orion EM-2 spacecraft |
+| Moon               | `301`       | Earth's Moon          |
 
 Parameters: Earth-centered (`500@399`), J2000 frame, 1-hour step size, km/s units.
 
@@ -69,17 +71,17 @@ Phases are detected dynamically from the trajectory data:
 
 ### Controls
 
-| Action | Input |
-|--------|-------|
-| Rotate view | Left-click drag |
-| Pan | Right-click drag |
-| Zoom | Scroll wheel |
-| Play / Pause | `Space` or ▶ button |
-| Step back 1 hour | `←` arrow key |
-| Step forward 1 hour | `→` arrow key |
-| Jump to start | `Home` key or ⏮ button |
-| Jump to end | `End` key or ⏭ button |
-| Scrub timeline | Drag the timeline slider |
+| Action                | Input                                        |
+| --------------------- | -------------------------------------------- |
+| Rotate view           | Left-click drag                              |
+| Pan                   | Right-click drag                             |
+| Zoom                  | Scroll wheel                                 |
+| Play / Pause          | `Space` or ▶ button                          |
+| Step back 1 hour      | `←` arrow key                                |
+| Step forward 1 hour   | `→` arrow key                                |
+| Jump to start         | `Home` key or ⏮ button                      |
+| Jump to end           | `End` key or ⏭ button                       |
+| Scrub timeline        | Drag the timeline slider                     |
 | Change playback speed | Speed buttons (1×, 100×, 1000×, 5000×, 10k×) |
 
 ### Playback Speed
@@ -102,14 +104,14 @@ The top-right panel shows live telemetry for the Orion spacecraft at the current
 
 ## Tech Stack
 
-| Technology | Purpose |
-|------------|---------|
-| [Three.js](https://threejs.org/) | 3D WebGL rendering |
-| [Vite](https://vitejs.dev/) | Build tool & dev server |
-| [TypeScript](https://www.typescriptlang.org/) | Type-safe source code |
-| [TailwindCSS](https://tailwindcss.com/) | UI styling |
-| [pnpm](https://pnpm.io/) | Package manager |
-| [JPL Horizons API](https://ssd.jpl.nasa.gov/horizons/) | Trajectory data |
+| Technology                                             | Purpose                 |
+| ------------------------------------------------------ | ----------------------- |
+| [Three.js](https://threejs.org/)                       | 3D WebGL rendering      |
+| [Vite](https://vitejs.dev/)                            | Build tool & dev server |
+| [TypeScript](https://www.typescriptlang.org/)          | Type-safe source code   |
+| [TailwindCSS](https://tailwindcss.com/)                | UI styling              |
+| [pnpm](https://pnpm.io/)                               | Package manager         |
+| [JPL Horizons API](https://ssd.jpl.nasa.gov/horizons/) | Trajectory data         |
 
 ---
 
@@ -151,12 +153,12 @@ To force a fresh data fetch, clear `localStorage` in your browser's DevTools.
 
 NASA-inspired dark theme with mission-phase color coding:
 
-| Color | Meaning |
-|-------|---------|
-| `#0B3D91` | NASA Blue (UI accents) |
-| `#FC3D21` | NASA Red (errors) |
-| `#00BFFF` | Earth Orbit phase |
+| Color     | Meaning                 |
+| --------- | ----------------------- |
+| `#0B3D91` | NASA Blue (UI accents)  |
+| `#FC3D21` | NASA Red (errors)       |
+| `#00BFFF` | Earth Orbit phase       |
 | `#FF8C00` | Trans-Lunar Coast phase |
-| `#DA70D6` | Lunar Flyby phase |
-| `#00FF7F` | Return to Earth phase |
-| `#C0C0C0` | Moon orbital path |
+| `#DA70D6` | Lunar Flyby phase       |
+| `#00FF7F` | Return to Earth phase   |
+| `#C0C0C0` | Moon orbital path       |
