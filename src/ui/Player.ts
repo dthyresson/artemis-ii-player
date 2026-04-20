@@ -11,7 +11,7 @@ export class Player {
 
   private _missionTime: number
   private _isPlaying = false
-  private _speed = 1000
+  private _speed = 15000
 
   private lastRealTime = 0
 
@@ -99,8 +99,11 @@ export class Player {
     this.updatePlayBtn()
   }
 
+  private static readonly PLAY_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-4 h-4 pointer-events-none"><path d="M4 2.5l9 5.5-9 5.5z"/></svg>`
+  private static readonly PAUSE_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-4 h-4 pointer-events-none"><rect x="3" y="2" width="4" height="12" rx="1"/><rect x="9" y="2" width="4" height="12" rx="1"/></svg>`
+
   private updatePlayBtn(): void {
-    this.btnPlay.textContent = this._isPlaying ? '⏸' : '▶'
+    this.btnPlay.innerHTML = this._isPlaying ? Player.PAUSE_SVG : Player.PLAY_SVG
   }
 
   private updateScrubber(): void {
