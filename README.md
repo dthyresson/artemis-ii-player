@@ -1,5 +1,7 @@
 # Artemis II — Mission Trajectory Visualization
 
+[![GitHub](https://img.shields.io/badge/GitHub-dthyresson%2Fartemis--ii--player-181717?logo=github&logoColor=white)](https://github.com/dthyresson/artemis-ii-player)
+
 An interactive 3D visualization of the Artemis II mission (April 2026), showing the Orion spacecraft's journey from Earth to the Moon and back. Trajectory data is fetched live from NASA's JPL Horizons API.
 
 <img width="1424" height="775" alt="image" src="https://github.com/user-attachments/assets/fd87e54d-2802-40c2-88de-77feebf4c2f0" />
