@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Artemis II — Mission Trajectory Visualization</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>" />
+    <script type="module" src="/src/main.ts"></script>
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body class="bg-black overflow-hidden">
+    <div id="app" class="w-screen h-screen relative">
+      <!-- Three.js canvas mounts here -->
+      <canvas id="canvas" class="absolute inset-0 w-full h-full"></canvas>
+
+      <!-- Loading overlay -->
+      <div id="loading" class="absolute inset-0 flex flex-col items-center justify-center bg-black z-50">
+        <div class="flex flex-col items-center gap-6">
+          <div class="nasa-logo text-4xl font-bold tracking-widest text-white">NASA</div>
+          <div class="text-nasa-gray text-sm tracking-[0.3em] uppercase">Artemis II Mission</div>
+          <div class="text-white text-xl font-light tracking-wider">Trajectory Visualization</div>
+          <div class="mt-8 flex flex-col items-center gap-3">
+            <div class="w-64 h-1 bg-nasa-darkblue rounded-full overflow-hidden">
+              <div id="loading-bar" class="h-full bg-nasa-blue rounded-full transition-all duration-300" style="width: 0%"></div>
+            </div>
+            <div id="loading-status" class="text-nasa-gray text-xs tracking-widest uppercase">Initializing...</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Header -->
+      <div class="absolute top-0 left-0 right-0 flex items-center justify-between px-4 py-3 z-10 pointer-events-none">
+        <div class="flex items-center gap-3">
+          <div class="nasa-logo-small text-white font-black text-lg tracking-widest border border-white px-2 py-0.5">NASA</div>
+          <div class="hidden sm:block">
+            <div class="text-white font-semibold text-sm tracking-wider">ARTEMIS II</div>
+            <div class="text-nasa-gray text-xs tracking-widest uppercase">Mission Trajectory · April 2026</div>
+          </div>
+        </div>
+        <div class="flex items-center gap-2">
+          <div id="phase-badge" class="px-3 py-1 rounded text-xs font-bold tracking-widest uppercase border"></div>
+        </div>
+      </div>
+
+      <!-- Telemetry panel -->
+      <div id="telemetry" class="absolute top-14 right-3 w-64 bg-black/80 border border-nasa-blue/40 rounded p-3 z-10 backdrop-blur-sm">
+        <div class="text-nasa-blue text-xs font-bold tracking-widest uppercase mb-2 border-b border-nasa-blue/30 pb-1">
+          Telemetry
+        </div>
+        <div class="space-y-1 font-mono text-xs">
+          <div class="flex justify-between">
+            <span class="text-nasa-gray">MET</span>
+            <span id="tel-met" class="text-white">—</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-nasa-gray">UTC</span>
+            <span id="tel-utc" class="text-white text-right">—</span>
+          </div>
+          <div class="border-t border-nasa-blue/20 my-1"></div>
+          <div class="text-nasa-gray text-xs uppercase tracking-wider mb-0.5">Position (km)</div>
+          <div class="flex justify-between">
+            <span class="text-nasa-gray">X</span>
+            <span id="tel-x" class="text-white">—</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-nasa-gray">Y</span>
+            <span id="tel-y" class="text-white">—</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-nasa-gray">Z</span>
+            <span id="tel-z" class="text-white">—</span>
+          </div>
+          <div class="border-t border-nasa-blue/20 my-1"></div>
+          <div class="text-nasa-gray text-xs uppercase tracking-wider mb-0.5">Velocity (km/s)</div>
+          <div class="flex justify-between">
+            <span class="text-nasa-gray">VX</span>
+            <span id="tel-vx" class="text-white">—</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-nasa-gray">VY</span>
+            <span id="tel-vy" class="text-white">—</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-nasa-gray">VZ</span>
+            <span id="tel-vz" class="text-white">—</span>
+          </div>
+          <div class="border-t border-nasa-blue/20 my-1"></div>
+          <div class="flex justify-between">
+            <span class="text-nasa-gray">Speed</span>
+            <span id="tel-speed" class="text-white">—</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-nasa-gray">Dist Earth</span>
+            <span id="tel-dist-earth" class="text-white">—</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-nasa-gray">Dist Moon</span>
+            <span id="tel-dist-moon" class="text-white">—</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Phase legend -->
+      <div class="absolute bottom-24 left-3 bg-black/80 border border-nasa-blue/40 rounded p-3 z-10 backdrop-blur-sm">
+        <div class="text-nasa-blue text-xs font-bold tracking-widest uppercase mb-2">Mission Phases</div>
+        <div class="space-y-1.5 text-xs font-mono">
+          <div class="flex items-center gap-2">
+            <div class="w-6 h-0.5" style="background:#00BFFF"></div>
+            <span class="text-nasa-gray">Earth Orbit</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <div class="w-6 h-0.5" style="background:#FF8C00"></div>
+            <span class="text-nasa-gray">Trans-Lunar</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <div class="w-6 h-0.5" style="background:#DA70D6"></div>
+            <span class="text-nasa-gray">Lunar Flyby</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <div class="w-6 h-0.5" style="background:#00FF7F"></div>
+            <span class="text-nasa-gray">Return</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <div class="w-6 h-0.5 border-t border-dashed" style="border-color:#C0C0C0"></div>
+            <span class="text-nasa-gray">Moon Orbit</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Player controls -->
+      <div class="absolute bottom-0 left-0 right-0 bg-black/90 border-t border-nasa-blue/30 px-4 py-3 z-10 backdrop-blur-sm">
+        <div class="flex flex-col gap-2 max-w-5xl mx-auto">
+          <!-- Scrubber -->
+          <div class="flex items-center gap-3">
+            <span id="time-start" class="text-nasa-gray text-xs font-mono whitespace-nowrap">Apr 2</span>
+            <input
+              id="scrubber"
+              type="range"
+              min="0"
+              max="1000"
+              value="0"
+              class="flex-1 h-1 appearance-none bg-nasa-darkblue rounded cursor-pointer scrubber-input"
+            />
+            <span id="time-end" class="text-nasa-gray text-xs font-mono whitespace-nowrap">Apr 10</span>
+          </div>
+          <!-- Controls row -->
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <button id="btn-restart" class="player-btn" title="Restart">⏮</button>
+              <button id="btn-play" class="player-btn text-lg" title="Play/Pause">▶</button>
+              <button id="btn-end" class="player-btn" title="Jump to end">⏭</button>
+            </div>
+            <div id="current-time" class="text-white text-xs font-mono tracking-wider"></div>
+            <div class="flex items-center gap-3">
+              <div class="flex items-center gap-1">
+                <span class="text-nasa-gray text-xs mr-1">Focus:</span>
+                <button class="focus-btn active" data-focus="earth">Earth</button>
+                <button class="focus-btn" data-focus="moon">Moon</button>
+              </div>
+              <div class="flex items-center gap-1">
+                <span class="text-nasa-gray text-xs mr-1">Speed:</span>
+                <button class="speed-btn" data-speed="1">1×</button>
+                <button class="speed-btn" data-speed="100">100×</button>
+                <button class="speed-btn active" data-speed="1000">1000×</button>
+                <button class="speed-btn" data-speed="5000">5000×</button>
+                <button class="speed-btn" data-speed="10000">10k×</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Camera controls hint -->
+      <div class="absolute bottom-24 right-3 text-nasa-gray text-xs font-mono bg-black/60 rounded p-2 z-10 space-y-0.5">
+        <div>🖱 Drag — Rotate</div>
+        <div>🖱 Right drag — Pan</div>
+        <div>🖱 Scroll — Zoom</div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,97 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    background: #000;
+    color: #fff;
+    font-family: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+  }
+
+  #canvas {
+    display: block;
+  }
+}
+
+@layer components {
+  .player-btn {
+    @apply w-8 h-8 flex items-center justify-center rounded border border-nasa-blue/50 text-white hover:bg-nasa-blue/30 hover:border-nasa-blue transition-colors cursor-pointer text-sm;
+  }
+
+  .speed-btn {
+    @apply px-2 py-0.5 rounded border border-nasa-blue/30 text-nasa-gray text-xs hover:border-nasa-blue hover:text-white transition-colors cursor-pointer font-mono;
+  }
+
+  .speed-btn.active {
+    @apply border-nasa-blue text-white bg-nasa-blue/20;
+  }
+
+  .focus-btn {
+    @apply px-2 py-0.5 rounded border border-nasa-blue/30 text-nasa-gray text-xs hover:border-nasa-blue hover:text-white transition-colors cursor-pointer font-mono;
+  }
+
+  .focus-btn.active {
+    @apply border-nasa-blue text-white bg-nasa-blue/20;
+  }
+
+  .scrubber-input {
+    accent-color: #0B3D91;
+  }
+
+  .scrubber-input::-webkit-slider-thumb {
+    appearance: none;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #0B3D91;
+    cursor: pointer;
+    border: 2px solid #fff;
+  }
+
+  .scrubber-input::-webkit-slider-runnable-track {
+    height: 4px;
+    border-radius: 2px;
+    background: linear-gradient(to right, #0B3D91 var(--progress, 0%), #061D4A var(--progress, 0%));
+  }
+
+  .nasa-logo {
+    font-family: 'Arial Black', 'Arial Bold', sans-serif;
+    letter-spacing: 0.15em;
+  }
+
+  .nasa-logo-small {
+    font-family: 'Arial Black', 'Arial Bold', sans-serif;
+    letter-spacing: 0.1em;
+    font-size: 0.85rem;
+  }
+}
+
+/* Phase badge colors */
+#phase-badge[data-phase="earth"] {
+  color: #00BFFF;
+  border-color: #00BFFF;
+  background: rgba(0, 191, 255, 0.1);
+}
+
+#phase-badge[data-phase="translunar"] {
+  color: #FF8C00;
+  border-color: #FF8C00;
+  background: rgba(255, 140, 0, 0.1);
+}
+
+#phase-badge[data-phase="flyby"] {
+  color: #DA70D6;
+  border-color: #DA70D6;
+  background: rgba(218, 112, 214, 0.1);
+}
+
+#phase-badge[data-phase="return"] {
+  color: #00FF7F;
+  border-color: #00FF7F;
+  background: rgba(0, 255, 127, 0.1);
+}
