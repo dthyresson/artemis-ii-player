@@ -31,4 +31,4 @@ Thumbs.db
 .vite
 
 # Pre-fetched trajectory data (generated at build time)
-public/data/
+#public/data/
